@@ -1,0 +1,107 @@
+syntax="proto3";
+package cosmos.fake;
+
+message TxRaw {
+  bytes body = 1;
+  bytes auth_info = 2;
+  repeated bytes signatures = 3;
+}
+
+message SignDoc {
+  // body_bytes is protobuf serialization of a TxBody that matches the
+  // representation in TxRaw.
+  bytes body_bytes = 1;
+
+  // auth_info_bytes is a protobuf serialization of an AuthInfo that matches the
+  // representation in TxRaw.
+  bytes auth_info_bytes = 2;
+
+  // chain_id is the unique identifier of the chain this transaction targets.
+  // It prevents signed transactions from being used on another chain by an
+  // attacker
+  string chain_id = 3;
+
+  // account_number is the account number of the account in state
+  uint64 account_number = 4;
+}
+
+message TxBody {
+  repeated Any messages = 1;
+  string memo = 2;
+  uint64 timeout_height = 3;
+}
+
+message TxBodyWithoutMemo {
+  repeated Any messages = 1;
+  uint64 timeout_height = 3;
+}
+
+message TxBodyWithoutToh {
+  repeated Any messages = 1;
+  string memo = 2;
+}
+
+message TxBodyMsgsOnly {
+  repeated Any messages = 1;
+}
+
+message AuthInfo {
+  repeated SignerInfo signer_infos = 1;
+  Fee fee = 2;
+}
+
+message AuthInfoWithoutGas {
+  repeated SignerInfo signer_infos = 1;
+  Empty fee = 2;
+
+  message Empty {}
+}
+
+message SignerInfo {
+  Any public_key = 1;
+  ModeInfo mode_info = 2;
+  uint64 sequence = 3;
+}
+
+message ModeInfo {
+  oneof sum {
+    Single single = 1;
+  }
+
+  message Single {
+    SignMode mode = 1;
+  }
+}
+
+// SignMode represents a signing mode with its own security guarantees.
+enum SignMode {
+  // SIGN_MODE_UNSPECIFIED specifies an unknown signing mode and will be
+  // rejected
+  SIGN_MODE_UNSPECIFIED = 0;
+
+  // SIGN_MODE_DIRECT specifies a signing mode which uses SignDoc and is
+  // verified with raw bytes from Tx
+  SIGN_MODE_DIRECT = 1;
+
+  // SIGN_MODE_TEXTUAL is a future signing mode that will verify some
+  // human-readable textual representation on top of the binary representation
+  // from SIGN_MODE_DIRECT
+  SIGN_MODE_TEXTUAL = 2;
+
+  // SIGN_MODE_LEGACY_AMINO_JSON is a backwards compatibility mode which uses
+  // Amino JSON and will be removed in the future
+  SIGN_MODE_LEGACY_AMINO_JSON = 127;
+}
+
+message Any {
+  string type_url = 1;
+  bytes value = 2;
+}
+
+message Fee {
+  uint64 gas_limit = 2;
+}
+
+message PubKey {
+  bytes key = 1;
+}

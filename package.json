@@ -1,0 +1,36 @@
+{
+  "name": "dem-api",
+  "description": "Library providing JavaScript API to access DeM data (messages, attachments) in Artery Storage",
+  "author": "Artery Network Corporation",
+  "version": "1.0.0",
+  "license" : "MIT",
+  "dependencies": {
+    "@nativescript/core": "~7.3.0",
+    "@stablelib/salsa20": "^1.0.2",
+    "@stablelib/xchacha20": "^1.0.1",
+    "@triniwiz/nativescript-socketio": "^5.0.1",
+    "axios": "^0.24.0",
+    "bech32": "^2.0.0",
+    "bip32": "^2.0.6",
+    "bitcore-lib": "^8.25.25",
+    "bitcore-mnemonic": "^8.25.25",
+    "bn.js": "^4.12.0",
+    "elliptic": "^6.5.4",
+    "lodash": "^4.17.21",
+    "mime-types": "^2.1.34",
+    "protobufjs": "^6.11.2",
+    "randombytes": "^2.1.0",
+    "socket.io-client": "^4.4.0"
+  },
+  "main": "src/index",
+  "scripts": {
+    "lint": "eslint src",
+    "test": "jest",
+    "proto-gen": "pbjs --keep-case -t=json -p=src/proto src/proto/artery/bank/v1beta1/tx.proto src/proto/artery/delegating/v1beta1/tx.proto src/proto/artery/profile/v1beta1/tx.proto src/proto/cosmos/fake.proto > src/proto/bundle.json",
+    "postinstall": "npm run proto-gen"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "jest": "^27.4.5"
+  }
+}

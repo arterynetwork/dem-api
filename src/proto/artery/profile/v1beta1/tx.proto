@@ -1,0 +1,71 @@
+syntax = "proto3";
+package artery.profile.v1beta1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "bitbucket.org/d0n4ik/art-node/x/profile/types";
+
+service Msg {
+  rpc BuyImExtraStorage(MsgBuyImExtraStorage) returns (MsgBuyImExtraStorageResponse);
+  rpc GiveUpImExtra(MsgGiveUpImExtra) returns (MsgGiveUpImExtraResponse);
+  rpc ProlongImExtra(MsgProlongImExtra) returns (MsgProlongImExtraResponse);
+}
+
+message MsgBuyImExtraStorage {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string address = 1 [
+    (gogoproto.jsontag)  = "address",
+    (gogoproto.moretags) = "yaml:\"address\""
+  ];
+  uint32 extra_storage = 2 [
+    (gogoproto.jsontag)  = "extra_storage",
+    (gogoproto.moretags) = "yaml:\"extra_storage\""
+  ];
+}
+
+message MsgBuyImExtraStorageResponse {}
+
+message MsgGiveUpImExtra {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string address = 1 [
+    (gogoproto.jsontag)  = "address",
+    (gogoproto.moretags) = "yaml:\"address\""
+  ];
+  // Amount - a new (i.e. reduced) extra (i.e. over free 5GB) amount, GB
+  uint32 amount = 2 [
+    (gogoproto.jsontag)  = "amount",
+    (gogoproto.moretags) = "yaml:\"amount\""
+  ];
+}
+
+// Fake to canonize protobuf
+message MsgGiveUpImExtra_All {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  reserved 2;
+  reserved "amount";
+
+  string address = 1 [
+    (gogoproto.jsontag)  = "address",
+    (gogoproto.moretags) = "yaml:\"address\""
+  ];
+}
+
+message MsgGiveUpImExtraResponse {}
+
+message MsgProlongImExtra {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string address = 1 [
+    (gogoproto.jsontag)  = "address",
+    (gogoproto.moretags) = "yaml:\"address\""
+  ];
+}
+
+message MsgProlongImExtraResponse {}
